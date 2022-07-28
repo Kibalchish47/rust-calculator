@@ -8,12 +8,12 @@ enum Operation {
 }
 
 impl Operation {
-    fn evaluate(&self, num1: u32, num2 : u32) -> u32 {
+    fn evaluate(&self, num1: u32, num2 : u32) -> u32 { // this function defines what is the operation chosen by the user
         match self {
             Operation::Add  => num1 + num2, // returns num1 + num2 
-            Operation::Sub  => num1 - num2, // returns ... 
-            Operation::Mult => num1 * num2, // returns ...
-            Operation::Div  => num1 / num2, // returns ...
+            Operation::Sub  => num1 - num2, // returns ... -
+            Operation::Mult => num1 * num2, // returns ... *
+            Operation::Div  => num1 / num2, // returns ... /
         }
     }
 
@@ -23,14 +23,15 @@ impl Operation {
             "-" => Ok(Operation::Sub),
             "*" => Ok(Operation::Mult),
             "/" => Ok(Operation::Div),
-            &_ => Err("Error. ".to_string()),
+            &_ => Err("Error. ".to_string()), // error handling
         }
     }
 }
 
 struct Input;
 
-impl Input {
+impl Input 
+{
     pub fn string(msg : &str) -> String {
         let mut input:String = String::new();
         print!("{}", msg);
@@ -43,12 +44,13 @@ impl Input {
         return input;
     }
     
-    fn u32(msg: &str) -> u32 {
+    fn u32(msg: &str) -> u32 { // this function checks if the input is a number to begin with
         Self::string(msg).trim().parse().expect("Not a number!")
     }
 }
 
-pub fn main() {
+pub fn main() 
+{
     println!("TEXT-BASED CALCULATOR");
     loop{
         println!("");
@@ -59,7 +61,7 @@ pub fn main() {
 
         let operation = Operation::from_string(operation.to_string()).unwrap();
 
-        let result : u32 =  operation.evaluate(num1, num2);
+        let result:u32 =  operation.evaluate(num1, num2);
 
         println!("");
         println!("The result of the calculation is : {}", result);
