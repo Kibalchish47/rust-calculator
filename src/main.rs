@@ -1,11 +1,11 @@
 use std::io::{self, Write};
-
 enum Operation { // every member is an operation : + - * / 
     Add,
     Sub,
     Mult,
     Div,
     Exp,
+    Mod, 
 }
 
 impl Operation {
@@ -16,6 +16,7 @@ impl Operation {
             Operation::Mult => num1 * num2,    // returns ... *
             Operation::Div  => num1 / num2,    // returns ... /
             Operation::Exp  => num1.pow(num2), // returns ... **
+            Operation::Mod  => num1 % num2,    // returns ... %
         }
     }
 
@@ -25,7 +26,8 @@ impl Operation {
             "-"  => Ok(Operation::Sub),  // does a substraction
             "*"  => Ok(Operation::Mult), // does a multiplication 
             "/"  => Ok(Operation::Div),  // does a division
-            "**" => Ok(Operation::Exp),  // does an exponent
+            "**" => Ok(Operation::Exp),  // does an exponent 
+            "%"  => Ok(Operation::Mod),  // does a modulus
             &_   => Err("Error. ".to_string()), // error handling
         }
     }
@@ -66,12 +68,13 @@ pub fn main()
     loop
     { // the actual input loop 
         println!("");
+        
         // num 1 and num 2 input 
         let num1 = Input::u32("Enter the first number : ").unwrap_or(memory);
         let num2 = Input::u32("Enter the second number : ").unwrap_or(memory);
 
         //operation input
-        let operation = Input::string("Choose your operation (+ - * / **) : ");
+        let operation = Input::string("Choose your operation (+ - * / ** %) : ");
 
         let operation = Operation::from_string(operation.to_string()).unwrap();
 
