@@ -39,12 +39,12 @@ impl Input // grouping together helper functions
         let mut input : String = String::new();
         print!("{}", msg);
     
-        io::stdout().flush().unwrap();
+        io::stdout().flush().unwrap(); // input 
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
     
-        return input;
+        return input; // return input
     }
     
     fn u32(msg: &str) -> Option<u32> { // this function checks if the input is a number to begin with
@@ -63,20 +63,25 @@ pub fn main()
     println!("To use the result of the previous calculation as a value, enter 'm' instead of the number (the value is 0 by default) !");
 
     let mut memory:u32 = 0;
-    loop{
+    loop
+    { // the actual input loop 
         println!("");
+        // num 1 and num 2 input 
         let num1 = Input::u32("Enter the first number : ").unwrap_or(memory);
         let num2 = Input::u32("Enter the second number : ").unwrap_or(memory);
 
+        //operation input
         let operation = Input::string("Choose your operation (+ - * / **) : ");
 
         let operation = Operation::from_string(operation.to_string()).unwrap();
 
-        let result:u32 =  operation.evaluate(num1, num2);
-
+        let result:u32 =  operation.evaluate(num1, num2); // this function actually does the maths 
+        
+        // result output
         println!("");
         println!("The result of the calculation is : {} (it is a u32)!", result);
 
+        // setting the memory for the next iteration of the loop
         memory = result; 
     }
 }
