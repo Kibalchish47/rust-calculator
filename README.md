@@ -1,17 +1,12 @@
-This is a calculator that I have written along with Sammy69jsp. 
+This is a calculator that I have written along with Sammy69jsp, to try to learn Rust.
 
 It includes basic functionality, such as : 
 
--Addition,
+-Addition (+)
+-Substraction (-)
+-Multiplication (*)
+-Division (/)
+-Exponents ()
+-Modulus (%)
 
--Substraction, 
-
--Multiplication, 
-
--Division, 
-
--Exponents, 
-
--Modulus, 
-
-Also there is a little functionnality called "memory", which is basically the result of your previous calculation that can be used as a placeholder (enter "m" instead of the number). 
+To use the previous value you calculated (the so-called "memory"), enter "m" instead of the number.
