@@ -1,90 +1,109 @@
-use std::io::{self, Write};
-enum Operation { // every member is an operation : + - * / 
+use std::{
+    io::Write,
+    ops::{Add, Div, Mul, Rem, Sub},
+    str::FromStr,
+};
+
+pub type Number = f64;
+
+pub enum Operation {
     Add,
-    Sub,
-    Mult,
-    Div,
-    Exp,
-    Mod, 
+    Subtract,
+    Multiply,
+    Divide,
+    Exponentiation,
+    Modulo,
 }
 
 impl Operation {
-    fn evaluate(&self, num1: u32, num2 : u32) -> u32 { // this function defines what is the operation chosen by the user
+    fn op(&self) -> fn(Number, Number) -> Number {
         match self {
-            Operation::Add  => num1 + num2,    // returns num1 + num2 
-            Operation::Sub  => num1 - num2,    // returns ... -
-            Operation::Mult => num1 * num2,    // returns ... *
-            Operation::Div  => num1 / num2,    // returns ... /
-            Operation::Exp  => num1.pow(num2), // returns ... **
-            Operation::Mod  => num1 % num2,    // returns ... %
-        }
-    }
-
-    fn from_string(operation: String) -> Result<Self, String> { // associates the inputted operations with the operations in the enum
-        match operation.trim() {
-            "+"  => Ok(Operation::Add),  // does an addition 
-            "-"  => Ok(Operation::Sub),  // does a substraction
-            "*"  => Ok(Operation::Mult), // does a multiplication 
-            "/"  => Ok(Operation::Div),  // does a division
-            "**" => Ok(Operation::Exp),  // does an exponent 
-            "%"  => Ok(Operation::Mod),  // does a modulus
-            &_   => Err("Error. ".to_string()), // error handling
+            Operation::Add => Number::add,
+            Operation::Subtract => Number::sub,
+            Operation::Multiply => Number::mul,
+            Operation::Divide => Number::div,
+            Operation::Exponentiation => Number::powf,
+            Operation::Modulo => Number::rem,
         }
     }
 }
 
-struct Input;
+pub struct OperationParseError;
 
-impl Input // grouping together helper functions 
-{
-    pub fn string(msg : &str) -> String { // takes an input (num1 and num2) and returns it 
-        let mut input : String = String::new();
-        print!("{}", msg);
-    
-        io::stdout().flush().unwrap(); // input 
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-    
-        return input; // return input
-    }
-    
-    fn u32(msg: &str) -> Option<u32> { // this function checks if the input is a number to begin with
-        match Self::string(msg).trim() {
-            // Load value from memory 
-            "m" => None,
-            // If it's not "m", normal parsing 
-             s  => Some(s.parse().expect("Not a number!")),
-        }
+// Type: Sets of Values
+// Functions: Maps of types: A -> B
+
+// Traits: Sets of Types
+// Traits (Associated Types):       Map: Type -> Type
+// Traits (Associated Constants):   Map: Type -> Value
+
+// Pointers: Map: value -> value
+
+// FromStr: {u8, u16, f64, f32, ... }
+// FromStr::Err {u8, u16, f64, f32 } -> { U8Error, U16Error, F64Error, }
+
+// FnOnce (trait) - functions that you can only call once.
+// FnMut (trait) - functions that
+// Fn (trait) - functions that can inspect their environment.
+// fn (trait, but also not) - pure functions.
+
+impl FromStr for Operation {
+    type Err = OperationParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(match s {
+            "+" => Operation::Add,
+            "-" => Operation::Subtract,
+            "*" => Operation::Multiply,
+            "/" => Operation::Divide,
+            "**" => Operation::Exponentiation,
+            "%" => Operation::Modulo,
+            _ => return Err(OperationParseError),
+        })
     }
 }
 
-pub fn main() 
+// Values
+// 'static -- maximal lifetime \exists 'static \in LTs (\forall 'lt \in LTs 'static >= 'lt)
+
+fn parse<F, T>(msg: &str, validator: F) -> Result<T, Box<dyn std::error::Error>>
+where
+    T: FromStr,
+    F: Fn(&str) -> Result<T, T::Err>,
 {
-    println!("TEXT-BASED CALCULATOR ! ");
-    println!("To use the result of the previous calculation as a value, enter 'm' instead of the number (the value is 0 by default) !");
+    let mut input = String::new();
 
-    let mut memory:u32 = 0;
-    loop
-    { // the actual input loop 
-        println!("");
-        
-        // num 1 and num 2 input 
-        let num1 = Input::u32("Enter the first number : ").unwrap_or(memory);
-        let num2 = Input::u32("Enter the second number : ").unwrap_or(memory);
+    const A: usize = 1;
 
-        //operation input
-        let operation = Input::string("Choose your operation (+ - * / ** %) : ");
+    loop {
+        print!("{msg}");
+        std::io::stdout().flush()?;
+        std::io::stdin().read_line(&mut input)?;
+        if let Ok(op) = validator(input.trim()) {
+            return Ok(op);
+        }
 
-        let operation = Operation::from_string(operation.to_string()).unwrap();
+        input.clear();
+    }
+}
 
-        let result:u32 =  operation.evaluate(num1, num2); // this function actually does the maths 
-        
-        // result output
-        println!("");
-        println!("The result of the calculation is : {} (it is a u32)!", result);
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut memory: Number = 0.0;
 
-        // setting the memory for the next iteration of the loop
-        memory = result; 
+    loop {
+        let func = |s: &str| {
+            if s.to_uppercase() == "MEM" {
+                Ok(memory)
+            } else {
+                Number::from_str(s)
+            }
+        };
+
+        let op: Operation = parse("Enter the operation (+ - * / ** %): ", Operation::from_str)?;
+        let a: f64 = parse("Enter the first number: ", func)?;
+        let b: f64 = parse("Enter the second number: ", func)?;
+
+        memory = op.op()(a, b);
+        println!("Result: {:.5}", memory);
     }
 }
