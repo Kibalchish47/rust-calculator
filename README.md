@@ -1,12 +1,16 @@
-This is a calculator that I have written along with Sammy69jsp, to try to learn Rust.
+# Basic calculator built in Rust
+
+This is a basic calculator, written with @Sammy99Jsp's assistance, 
 
 It includes basic functionality, such as : 
+- Various basic operations
+  - Addition (+)
+  - Substraction (-)
+  - Multiplication (*)
+  - Division (/)
+  - Exponents (**)
+  - Modulus (%)
+- Error handling (the program repeats the question until the user provides a satisfactory answer)
+- "Memory" feature that allows the user to reuse the previous output of the program (the keyword being "mem")
 
-- Addition (+)
-- Substraction (-)
-- Multiplication (*)
-- Division (/)
-- Exponents (**)
-- Modulus (%)
-
-To use the previous value you calculated (the so-called "memory"), enter "m" instead of the number.
+> Note: The calculator was rewritten and improved once I came back to rust in October 2024. 
