@@ -1,6 +1,6 @@
 # Basic calculator built in Rust
 
-This is a basic calculator, written with @Sammy99Jsp's assistance, 
+This is a basic calculator, written with @Sammy99Jsp's assistance, intended to teach me how to write code in Rust.
 
 It includes basic functionality, such as : 
 - Various basic operations
@@ -10,7 +10,8 @@ It includes basic functionality, such as :
   - Division (/)
   - Exponents (**)
   - Modulus (%)
-- Error handling (the program repeats the question until the user provides a satisfactory answer)
-- "Memory" feature that allows the user to reuse the previous output of the program (the keyword being "mem")
+- Error handling (the program repeats the question until the user provides a satisfactory answer).
+- "mem" feature (as in "memory"), which allows the user to reuse the previous output of the program.
+- "exit" feature, which safely terminates the program.
 
 > Note: The calculator was rewritten and improved once I came back to rust in October 2024. 
