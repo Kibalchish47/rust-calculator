@@ -1,6 +1,7 @@
 use std::{
     io::Write,
     ops::{Add, Div, Mul, Rem, Sub},
+    process::exit,
     str::FromStr,
 };
 
@@ -73,8 +74,6 @@ where
 {
     let mut input = String::new();
 
-    const A: usize = 1;
-
     loop {
         print!("{msg}");
         std::io::stdout().flush()?;
@@ -94,6 +93,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let func = |s: &str| {
             if s.to_uppercase() == "MEM" {
                 Ok(memory)
+            } else if s.to_uppercase() == "EXIT" {
+                std::process::exit(0);
+            } else if s.to_uppercase() == "E" {
+                Ok(std::f64::consts::E)
+            } else if s.to_uppercase() == "PI" {
+                Ok(std::f64::consts::PI)
             } else {
                 Number::from_str(s)
             }
