@@ -14,4 +14,4 @@ It includes basic functionality, such as :
 - "mem" feature (as in "memory"), which allows the user to reuse the previous output of the program.
 - "exit" feature, which safely terminates the program.
 
-> Note: The calculator was rewritten and improved once I came back to rust in October 2024. 
+> Note: The calculator was rewritten and improved once I came back to Rust in October 2024. 
